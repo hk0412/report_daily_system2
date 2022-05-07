@@ -13,6 +13,7 @@ import models.Employee;
  */
 public class EmployeeConverter {
 
+
     /**
      * ViewモデルのインスタンスからDTOモデルのインスタンスを作成する
      * @param ev EmployeeViewのインスタンス
@@ -20,17 +21,21 @@ public class EmployeeConverter {
      */
     public static Employee toModel(EmployeeView ev) {
 
+        Integer adm_flg = null;
+        if(ev.getAdminFlag() == AttributeConst.ROLE_ADMIN.getIntegerValue()) {
+            adm_flg = JpaConst.ROLE_ADMIN;
+        }else if (ev.getAdminFlag() == AttributeConst.ROLE_DIRECTOR.getIntegerValue()){
+            adm_flg = JpaConst.ROLE_DIRECTOR;
+        }else if (ev.getAdminFlag() == AttributeConst.ROLE_GENERAL.getIntegerValue()){
+            adm_flg = JpaConst.ROLE_GENERAL;
+        }
+
         return new Employee(
                 ev.getId(),
                 ev.getCode(),
                 ev.getName(),
                 ev.getPassword(),
-                ev.getAdminFlag() == null
-                        ? null
-                        : ev.getAdminFlag() == AttributeConst.EMP_ADMIN_FLG.getIntegerValue()
-                                ? JpaConst.ROLE_DIRECTOR
-                                : JpaConst.ROLE_MANAGER
-                                ? JpaConst.ROLE＿GENERAL:
+                adm_flg,
                 ev.getCreatedAt(),
                 ev.getUpdatedAt(),
                 ev.getDeleteFlag() == null
@@ -51,16 +56,21 @@ public class EmployeeConverter {
             return null;
         }
 
+        Integer adm_flg = null;
+        if (e.getAdminFlag() == JpaConst.ROLE_ADMIN) {
+            adm_flg = AttributeConst.ROLE_ADMIN.getIntegerValue();
+        }else if (e.getAdminFlag() == JpaConst.ROLE_DIRECTOR) {
+            adm_flg = AttributeConst.ROLE_DIRECTOR.getIntegerValue();
+        }else if (e.getAdminFlag() == JpaConst.ROLE_GENERAL) {
+            adm_flg = AttributeConst.ROLE_GENERAL.getIntegerValue();
+        }
+
         return new EmployeeView(
                 e.getId(),
                 e.getCode(),
                 e.getName(),
                 e.getPassword(),
-                e.getAdminFlag() == null
-                        ? null
-                        : e.getAdminFlag() == JpaConst.ROLE_ADMIN
-                                ? AttributeConst.ROLE_ADMIN.getIntegerValue()
-                                : AttributeConst.ROLE_GENERAL.getIntegerValue(),
+                adm_flg,
                 e.getCreatedAt(),
                 e.getUpdatedAt(),
                 e.getDeleteFlag() == null

@@ -10,6 +10,7 @@ import constants.ForwardConst;
 import constants.MessageConst;
 import constants.PropertyConst;
 import services.EmployeeService;
+
 /**
  * 認証に関する処理を行うActionクラス
  *
@@ -52,6 +53,7 @@ public class AuthAction extends ActionBase {
         //ログイン画面を表示
         forward(ForwardConst.FW_LOGIN);
     }
+
     /**
      * ログイン処理を行う
      * @throws ServletException
@@ -112,4 +114,5 @@ public class AuthAction extends ActionBase {
         redirect(ForwardConst.ACT_AUTH, ForwardConst.CMD_SHOW_LOGIN);
 
     }
+
 }
