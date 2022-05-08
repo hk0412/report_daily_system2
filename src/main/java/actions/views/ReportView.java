@@ -52,4 +52,13 @@ public class ReportView {
      * 更新日時
      */
     private LocalDateTime updatedAt;
+
+    /**
+     * 日報を承認
+     */
+    private String approval_employee;
+
+
+
+
 }

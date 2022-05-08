@@ -17,6 +17,7 @@ public class ReportConverter {
      * @return Reportのインスタンス
      */
     public static Report toModel(ReportView rv) {
+
         return new Report(
                 rv.getId(),
                 EmployeeConverter.toModel(rv.getEmployee()),
@@ -24,7 +25,8 @@ public class ReportConverter {
                 rv.getTitle(),
                 rv.getContent(),
                 rv.getCreatedAt(),
-                rv.getUpdatedAt());
+                rv.getUpdatedAt(),
+                rv.getApproval_employee());
     }
 
     /**
@@ -45,7 +47,8 @@ public class ReportConverter {
                 r.getTitle(),
                 r.getContent(),
                 r.getCreatedAt(),
-                r.getUpdatedAt());
+                r.getUpdatedAt(),
+                r.getApproval_employee());
     }
 
     /**
@@ -76,6 +79,7 @@ public class ReportConverter {
         r.setContent(rv.getContent());
         r.setCreatedAt(rv.getCreatedAt());
         r.setUpdatedAt(rv.getUpdatedAt());
+        r.setApproval_employee(rv.getApproval_employee());
 
     }
 

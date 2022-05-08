@@ -16,6 +16,8 @@
             </div>
         </c:if>
         <h2>日報　一覧</h2>
+        //部長のみ見えるor承認済みのもののみ見えるようにしたい
+        <c:if test="${sessionScope.login_employee.adminFlag == AttributeConst.ROLE_DIRECTOR.getIntegerValue()}">
         <table id="report_list">
             <tbody>
                 <tr>
@@ -50,6 +52,7 @@
                 </c:choose>
             </c:forEach>
         </div>
+        </c:if>
         <p><a href="<c:url value='?action=${actRep}&command=${commNew}' />">新規日報の登録</a></p>
 
     </c:param>

@@ -37,6 +37,10 @@
                     <fmt:parseDate value="${report.updatedAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="updateDay" type="date" />
                     <td><fmt:formatDate value="${updateDay}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
                 </tr>
+                <tr>
+                    <th>承認者</th>
+                   <td><c:out value="${report.approval_employee}" /></td>
+                </tr>
             </tbody>
         </table>
 
@@ -45,8 +49,17 @@
                 <a href="<c:url value='?action=${actRep}&command=${commEdt}&id=${report.id}' />">この日報を編集する</a>
             </p>
         </c:if>
-        
-        
+        <c:if test="${sessionScope.login_employee.adminFlag == AttributeConst.ROLE_DIRECTOR.getIntegerValue()}">
+            <label for="${AttributeConst.REP_COL_APPROVAL.getValue()}">承認</label><br />
+            <select name="${AttributeConst.REP_COL_APPROVAL.getValue()}">
+            <option value="${AttributeConst.APPRO_YES.getIntegerValue()}"<c:if test="${report.REP_COL_APPROVAL == AttributeConst.APPRO_YES.getIntegerValue()}"> selected</c:if>>する</option>
+            <option value="${AttributeConst.APPRO_NO.getIntegerValue()}"<c:if test="${report.REP_COL_APPROVAL == AttributeConst.APPRO_NO.getIntegerValue()}"> selected</c:if>>しない</option>
+            </select>
+
+            <button type="submit">更新</button>
+
+        </c:if>
+
 
         <p>
             <a href="<c:url value='?action=${actRep}&command=${commIdx}' />">一覧に戻る</a>

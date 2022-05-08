@@ -40,7 +40,10 @@ public interface JpaConst {
     String REP_COL_CONTENT = "content"; //日報の内容
     String REP_COL_CREATED_AT = "created_at"; //登録日時
     String REP_COL_UPDATED_AT = "updated_at"; //更新日時
-    String REP_COL_APPROVAL = "approval"; //承認
+    String REP_COL_APPROVAL = "approval_employee"; //承認許可
+
+    int APPRO_YES = 0;
+    int APPRO_NO = 1;
 
 
     //Entity名

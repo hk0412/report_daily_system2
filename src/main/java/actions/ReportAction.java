@@ -109,10 +109,11 @@ public class ReportAction extends ActionBase {
             //パラメータの値をもとに日報情報のインスタンスを作成する
             ReportView rv = new ReportView(
                     null,
-                    ev, //ログインしている従業員を、日報作成者として登録する
+                    ev,  //ログインしている従業員を、日報作成者として登録する
                     day,
                     getRequestParam(AttributeConst.REP_TITLE),
                     getRequestParam(AttributeConst.REP_CONTENT),
+                    null,
                     null,
                     null);
 
@@ -231,5 +232,17 @@ public class ReportAction extends ActionBase {
 
             }
         }
+    }
+
+    //日報承認
+    public void approval() throws ServletException, IOException {
+        //idから従業員情報を取得
+        EmployeeView ev = (EmployeeView) getSessionScope(AttributeConst.LOGIN_EMP);
+
+        //承認flush表示
+        putSessionScope(AttributeConst.FLUSH, MessageConst.I_APPROVAL.getMessage());
+    document.getElementById("appproval-button").onclick = function() {
+        document.getElementById("form-text").innerHTML = "こんにちは " + document.getElementById("name").value + " さん！";
+      }
     }
 }
