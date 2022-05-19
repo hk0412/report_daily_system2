@@ -95,10 +95,17 @@ public class Report {
     private LocalDateTime updatedAt;
 
     /**
+     * 日報承認したか
+     */
+    @Column(name = JpaConst.REP_COL_APPROVAL , nullable = true)
+    private Integer approval;
+
+
+    /**
      * 日報承認者
      */
-    @Column(name = JpaConst.REP_COL_APPROVAL , nullable = false)
-    private String approval_employee;
+    @Column(name = JpaConst.REP_COL_APPRO_EMP , nullable = true)
+    private Integer approName;
 
 
 }

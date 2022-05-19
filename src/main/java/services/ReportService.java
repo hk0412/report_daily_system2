@@ -91,6 +91,7 @@ public class ReportService extends ServiceBase {
             rv.setCreatedAt(ldt);
             rv.setUpdatedAt(ldt);
             createInternal(rv);
+            approvalInternal(rv);
         }
 
         //バリデーションで発生したエラーを返却（エラーがなければ0件の空リスト）
@@ -114,6 +115,26 @@ public class ReportService extends ServiceBase {
             rv.setUpdatedAt(ldt);
 
             updateInternal(rv);
+        }
+
+        //バリデーションで発生したエラーを返却（エラーがなければ0件の空リスト）
+        return errors;
+    }
+
+    public List<String> approval(ReportView rv) {
+        //バリデーションを行う
+        List<String> errors = ReportValidator.validate(rv);
+
+        if (errors.size() == 0) {
+
+            rv.setApproval(1);
+            approvalInternal(rv);
+
+
+            //int id = AttributeConst.login_employee.id
+            //rv.setApproName(id);
+            approNameInternal(rv);
+
         }
 
         //バリデーションで発生したエラーを返却（エラーがなければ0件の空リスト）
@@ -154,4 +175,23 @@ public class ReportService extends ServiceBase {
 
     }
 
+    //日報を承認する
+    private void approvalInternal(ReportView rv) {
+
+        em.getTransaction().begin();
+        Report r = findOneInternal(rv.getId());
+        ReportConverter.copyViewToModel(r, rv);
+        em.getTransaction().commit();
+
+    }
+
+    //日報承認者登録
+    private void approNameInternal(ReportView rv) {
+
+        em.getTransaction().begin();
+        Report r = findOneInternal(rv.getId());
+        ReportConverter.copyViewToModel(r, rv);
+        em.getTransaction().commit();
+
+    }
 }

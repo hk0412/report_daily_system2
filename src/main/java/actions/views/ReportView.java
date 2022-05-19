@@ -54,11 +54,13 @@ public class ReportView {
     private LocalDateTime updatedAt;
 
     /**
-     * 日報を承認
+     * 日報を承認したかどうか
      */
-    private String approval_employee;
+    private Integer approval;
 
 
+//日報承認者
+    private Integer approName;
 
 
 }

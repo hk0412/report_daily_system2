@@ -42,8 +42,7 @@ public class ReportAction extends ActionBase {
      */
     public void index() throws ServletException, IOException {
 
-
-            //指定されたページ数の一覧画面に表示する日報データを取得
+        //指定されたページ数の一覧画面に表示する日報データを取得
         int page = getPage();
         List<ReportView> reports = service.getAllPerPage(page);
 
@@ -65,6 +64,7 @@ public class ReportAction extends ActionBase {
         //一覧画面を表示
         forward(ForwardConst.FW_REP_INDEX);
     }
+
     /**
      * 新規登録画面を表示する
      * @throws ServletException
@@ -109,10 +109,11 @@ public class ReportAction extends ActionBase {
             //パラメータの値をもとに日報情報のインスタンスを作成する
             ReportView rv = new ReportView(
                     null,
-                    ev,  //ログインしている従業員を、日報作成者として登録する
+                    ev, //ログインしている従業員を、日報作成者として登録する
                     day,
                     getRequestParam(AttributeConst.REP_TITLE),
                     getRequestParam(AttributeConst.REP_CONTENT),
+                    null,
                     null,
                     null,
                     null);
@@ -141,6 +142,7 @@ public class ReportAction extends ActionBase {
             }
         }
     }
+
     /**
      * 詳細画面を表示する
      * @throws ServletException
@@ -162,7 +164,15 @@ public class ReportAction extends ActionBase {
             //詳細画面を表示
             forward(ForwardConst.FW_REP_SHOW);
         }
+
+        //セッションに承認完了のフラッシュメッセージを設定
+        putSessionScope(AttributeConst.FLUSH, MessageConst.I_APPROVAL.getMessage());
+
+        //日報詳細画面にリダイレクト
+        redirect(ForwardConst.ACT_REP, ForwardConst.CMD_SHOW);
+
     }
+
     /**
      * 編集画面を表示する
      * @throws ServletException
@@ -191,6 +201,7 @@ public class ReportAction extends ActionBase {
         }
 
     }
+
     /**
      * 更新を行う
      * @throws ServletException
@@ -236,13 +247,29 @@ public class ReportAction extends ActionBase {
 
     //日報承認
     public void approval() throws ServletException, IOException {
-        //idから従業員情報を取得
-        EmployeeView ev = (EmployeeView) getSessionScope(AttributeConst.LOGIN_EMP);
 
-        //承認flush表示
-        putSessionScope(AttributeConst.FLUSH, MessageConst.I_APPROVAL.getMessage());
-    document.getElementById("appproval-button").onclick = function() {
-        document.getElementById("form-text").innerHTML = "こんにちは " + document.getElementById("name").value + " さん！";
-      }
+        //CSRF対策 tokenのチェック
+        if (checkToken()) {
+
+            //idを条件に日報データを取得する
+            ReportView rv = service.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
+
+            //承認１を登録
+            rv.setApproval(AttributeConst.APPRO_YES.getIntegerValue());
+
+            //セッションからログイン中の従業員情報を取得
+            EmployeeView ev = (EmployeeView) getSessionScope(AttributeConst.LOGIN_EMP);
+
+            //承認者を登録
+            rv.setApproName(getSessionScope(AttributeConst.EMP_ID));
+
+            //セッションに承認完了のフラッシュメッセージを設定
+            putSessionScope(AttributeConst.FLUSH, MessageConst.I_APPROVAL.getMessage());
+
+            //一覧画面にリダイレクト
+            redirect(ForwardConst.ACT_REP, ForwardConst.CMD_INDEX);
+
+        }
     }
+
 }

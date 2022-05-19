@@ -3,6 +3,8 @@ package actions.views;
 import java.util.ArrayList;
 import java.util.List;
 
+import constants.AttributeConst;
+import constants.JpaConst;
 import models.Report;
 
 /**
@@ -18,6 +20,7 @@ public class ReportConverter {
      */
     public static Report toModel(ReportView rv) {
 
+
         return new Report(
                 rv.getId(),
                 EmployeeConverter.toModel(rv.getEmployee()),
@@ -26,7 +29,12 @@ public class ReportConverter {
                 rv.getContent(),
                 rv.getCreatedAt(),
                 rv.getUpdatedAt(),
-                rv.getApproval_employee());
+                rv.getApproval() == null
+                ? null
+                : rv.getApproval() == AttributeConst.APPRO_YES.getIntegerValue()
+                        ? JpaConst.APPRO_YES
+                        : JpaConst.APPRO_NO,
+                rv.getApproName());
     }
 
     /**
@@ -48,7 +56,12 @@ public class ReportConverter {
                 r.getContent(),
                 r.getCreatedAt(),
                 r.getUpdatedAt(),
-                r.getApproval_employee());
+                r.getApproval() == null
+                ? null
+                : r.getApproval() == AttributeConst.APPRO_YES.getIntegerValue()
+                        ? JpaConst.APPRO_YES
+                        : JpaConst.APPRO_NO,
+                r.getApproName());
     }
 
     /**
@@ -79,8 +92,8 @@ public class ReportConverter {
         r.setContent(rv.getContent());
         r.setCreatedAt(rv.getCreatedAt());
         r.setUpdatedAt(rv.getUpdatedAt());
-        r.setApproval_employee(rv.getApproval_employee());
-
+        r.setApproval(rv.getApproval());
+        r.setApproName(rv.getApproName());
     }
 
 }

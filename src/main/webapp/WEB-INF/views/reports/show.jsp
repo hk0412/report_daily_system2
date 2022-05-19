@@ -2,10 +2,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="constants.ForwardConst" %>
+<%@ page import="constants.AttributeConst" %>
 
 <c:set var="actRep" value="${ForwardConst.ACT_REP.getValue()}" />
 <c:set var="commIdx" value="${ForwardConst.CMD_INDEX.getValue()}" />
 <c:set var="commEdt" value="${ForwardConst.CMD_EDIT.getValue()}" />
+<c:set var="commApp" value="${ForwardConst.CMD_APPROVAL.getValue()}" />
+
+<c:set var="appro" value="${ForwardConst.CMD_APPROVAL.getValue()}" />
+
+
 
 <c:import url="/WEB-INF/views/layout/app.jsp">
     <c:param name="content">
@@ -39,7 +45,7 @@
                 </tr>
                 <tr>
                     <th>承認者</th>
-                   <td><c:out value="${report.approval_employee}" /></td>
+                   <td><c:out value="${report.approval == approName}" /></td>
                 </tr>
             </tbody>
         </table>
@@ -49,16 +55,19 @@
                 <a href="<c:url value='?action=${actRep}&command=${commEdt}&id=${report.id}' />">この日報を編集する</a>
             </p>
         </c:if>
-        <c:if test="${sessionScope.login_employee.adminFlag == AttributeConst.ROLE_DIRECTOR.getIntegerValue()}">
-            <label for="${AttributeConst.REP_COL_APPROVAL.getValue()}">承認</label><br />
-            <select name="${AttributeConst.REP_COL_APPROVAL.getValue()}">
-            <option value="${AttributeConst.APPRO_YES.getIntegerValue()}"<c:if test="${report.REP_COL_APPROVAL == AttributeConst.APPRO_YES.getIntegerValue()}"> selected</c:if>>する</option>
-            <option value="${AttributeConst.APPRO_NO.getIntegerValue()}"<c:if test="${report.REP_COL_APPROVAL == AttributeConst.APPRO_NO.getIntegerValue()}"> selected</c:if>>しない</option>
-            </select>
 
-            <button type="submit">更新</button>
 
-        </c:if>
+
+         <c:if test="${sessionScope.login_employee.adminFlag == AttributeConst.ROLE_DIRECTOR.getIntegerValue()}">
+              <form method="POST"
+                action="<c:url value='?action=${actRep}&command=${appro}' />">
+
+                    <input type="hidden" name="${AttributeConst.REP_ID.getValue() }" value="${report.id }" />
+                    <input type="hidden" name="${AttributeConst.TOKEN.getValue() }" value="${_token}" />
+                    <button type="submit">日報承認</button>
+
+            </form>
+          </c:if>
 
 
         <p>

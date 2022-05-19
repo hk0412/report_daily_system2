@@ -34,8 +34,8 @@ public enum AttributeConst {
     EMP_ADMIN_FLG("admin_flag"),
 
     //管理者フラグ
-    ROLE_ADMIN(1),
     ROLE_DIRECTOR(2),
+    ROLE_ADMIN(1),
     ROLE_GENERAL(0),
 
     //削除フラグ
@@ -50,7 +50,12 @@ public enum AttributeConst {
     REP_DATE("report_date"),
     REP_TITLE("title"),
     REP_CONTENT("content"),
-    REP_APPROVAL("aprroval_name");
+    REP_APPROVAL("aprroval"),
+    REP_APPNAME("approName"),
+
+    APPRO_YES(1),
+    APPRO_NO(0);
+
 
     private final String text;
     private final Integer i;

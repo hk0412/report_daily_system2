@@ -12,6 +12,7 @@
 
     </div>
 </c:if>
+
 <fmt:parseDate value="${report.reportDate}" pattern="yyyy-MM-dd" var="reportDay" type="date" />
 <label for="${AttributeConst.REP_DATE.getValue()}">日付</label><br />
 <input type="date" name="${AttributeConst.REP_DATE.getValue()}" value="<fmt:formatDate value='${reportDay}' pattern='yyyy-MM-dd' />" />
