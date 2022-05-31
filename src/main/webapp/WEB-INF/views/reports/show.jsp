@@ -45,7 +45,7 @@
                 </tr>
                 <tr>
                     <th>承認者</th>
-                   <td><c:out value="${report.approval == approName}" /></td>
+                   <td><c:out value="${report.approId.name}" /></td>
                 </tr>
             </tbody>
         </table>

@@ -1,7 +1,11 @@
 package services;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 import actions.views.EmployeeConverter;
 import actions.views.EmployeeView;
@@ -15,6 +19,18 @@ import models.validators.ReportValidator;
  * 日報テーブルの操作に関わる処理を行うクラス
  */
 public class ReportService extends ServiceBase {
+
+    //SessionScopeを使えるように
+    protected HttpServletRequest request;
+
+    public void init(
+            HttpServletRequest servletRequest) {
+        this.request = servletRequest;
+    }
+
+//    public  getSessionScope(AttributeConst key) {
+//       return request.getSession().getAttribute(key.getValue());
+//    }
 
     /**
      * 指定した従業員が作成した日報データを、指定されたページ数の一覧画面に表示する分取得しReportViewのリストで返却する
@@ -61,6 +77,21 @@ public class ReportService extends ServiceBase {
     }
 
     /**
+     * 指定されたページ数の一覧画面に表示する日報データを取得し、ReportViewのリストで返却する
+     * @param page ページ数
+     * @return 一覧画面に表示するデータのリスト
+     */
+    public List<ReportView> getAplPerPage(int page) {
+
+        List<Report> reports = em.createNamedQuery(JpaConst.Q_REP_GET_APL, Report.class)
+                .setFirstResult(JpaConst.ROW_PER_PAGE * (page - 1))
+                .setMaxResults(JpaConst.ROW_PER_PAGE)
+                .getResultList();
+        return ReportConverter.toViewList(reports);
+    }
+
+
+    /**
      * 日報テーブルのデータの件数を取得し、返却する
      * @return データの件数
      */
@@ -86,12 +117,12 @@ public class ReportService extends ServiceBase {
      */
     public List<String> create(ReportView rv) {
         List<String> errors = ReportValidator.validate(rv);
+
         if (errors.size() == 0) {
             LocalDateTime ldt = LocalDateTime.now();
             rv.setCreatedAt(ldt);
             rv.setUpdatedAt(ldt);
             createInternal(rv);
-            approvalInternal(rv);
         }
 
         //バリデーションで発生したエラーを返却（エラーがなければ0件の空リスト）
@@ -121,25 +152,15 @@ public class ReportService extends ServiceBase {
         return errors;
     }
 
-    public List<String> approval(ReportView rv) {
-        //バリデーションを行う
-        List<String> errors = ReportValidator.validate(rv);
+    public void approval(ReportView rv) throws ServletException, IOException {
 
-        if (errors.size() == 0) {
+        updateInternal(rv);
 
-            rv.setApproval(1);
-            approvalInternal(rv);
-
-
-            //int id = AttributeConst.login_employee.id
-            //rv.setApproName(id);
-            approNameInternal(rv);
-
-        }
-
-        //バリデーションで発生したエラーを返却（エラーがなければ0件の空リスト）
-        return errors;
     }
+
+//    private EmployeeView getSessionScope(AttributeConst empId) {
+//        return null;
+//    }
 
     /**
      * idを条件にデータを1件取得する
@@ -167,26 +188,6 @@ public class ReportService extends ServiceBase {
      * @param rv 日報データ
      */
     private void updateInternal(ReportView rv) {
-
-        em.getTransaction().begin();
-        Report r = findOneInternal(rv.getId());
-        ReportConverter.copyViewToModel(r, rv);
-        em.getTransaction().commit();
-
-    }
-
-    //日報を承認する
-    private void approvalInternal(ReportView rv) {
-
-        em.getTransaction().begin();
-        Report r = findOneInternal(rv.getId());
-        ReportConverter.copyViewToModel(r, rv);
-        em.getTransaction().commit();
-
-    }
-
-    //日報承認者登録
-    private void approNameInternal(ReportView rv) {
 
         em.getTransaction().begin();
         Report r = findOneInternal(rv.getId());

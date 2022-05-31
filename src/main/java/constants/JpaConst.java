@@ -45,7 +45,7 @@ public interface JpaConst {
     int APPRO_YES = 1;
     int APPRO_NO = 0;
 
-    String REP_COL_APPRO_EMP ="approName"; //日報承認者
+    String REP_COL_APPRO_EMP ="approId"; //日報承認者
 
     //Entity名
     String ENTITY_EMP = "employee"; //従業員
@@ -72,6 +72,8 @@ public interface JpaConst {
     //全ての日報をidの降順に取得する
     String Q_REP_GET_ALL = ENTITY_REP + ".getAll";
     String Q_REP_GET_ALL_DEF = "SELECT r FROM Report AS r ORDER BY r.id DESC";
+    String Q_REP_GET_APL = ENTITY_REP + ".getApl";
+    String Q_REP_GET_APL_DEF = "SELECT r FROM Report AS r WHERE r.approval = 1 ORDER BY r.id DESC";
     //全ての日報の件数を取得する
     String Q_REP_COUNT = ENTITY_REP + ".count";
     String Q_REP_COUNT_DEF = "SELECT COUNT(r) FROM Report AS r";

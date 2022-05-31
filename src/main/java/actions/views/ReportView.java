@@ -60,7 +60,7 @@ public class ReportView {
 
 
 //日報承認者
-    private Integer approName;
+    private EmployeeView approId;
 
 
 }

@@ -17,7 +17,7 @@ public enum AttributeConst {
     TOKEN("_token"),
     ERR("errors"),
 
-    //ログイン中の従業員
+    //ログイン中の従業員 EmployeeViewクラス全体
     LOGIN_EMP("login_employee"),
 
     //ログイン画面
@@ -52,6 +52,9 @@ public enum AttributeConst {
     REP_CONTENT("content"),
     REP_APPROVAL("aprroval"),
     REP_APPNAME("approName"),
+    REP_CREATEAT("createAt"),
+    REP_UPDATEAT("updateAt"),
+
 
     APPRO_YES(1),
     APPRO_NO(0);

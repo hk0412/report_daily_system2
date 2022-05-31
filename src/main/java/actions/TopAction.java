@@ -1,4 +1,5 @@
 package actions;
+
 import java.io.IOException;
 import java.util.List; //追記
 
@@ -9,13 +10,15 @@ import actions.views.ReportView;
 import constants.AttributeConst;
 import constants.ForwardConst;
 import constants.JpaConst;
-import services.ReportService;  //追記
+import services.ReportService; //追記
+
 /**
  * トップページに関する処理を行うActionクラス
  *
  */
 public class TopAction extends ActionBase {
     private ReportService service; //追記
+
     /**
      * indexメソッドを実行する
      */

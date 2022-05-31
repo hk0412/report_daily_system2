@@ -20,8 +20,8 @@ public class ReportConverter {
      */
     public static Report toModel(ReportView rv) {
 
-
         return new Report(
+
                 rv.getId(),
                 EmployeeConverter.toModel(rv.getEmployee()),
                 rv.getReportDate(),
@@ -30,11 +30,14 @@ public class ReportConverter {
                 rv.getCreatedAt(),
                 rv.getUpdatedAt(),
                 rv.getApproval() == null
-                ? null
-                : rv.getApproval() == AttributeConst.APPRO_YES.getIntegerValue()
-                        ? JpaConst.APPRO_YES
-                        : JpaConst.APPRO_NO,
-                rv.getApproName());
+                        ? null
+                        : rv.getApproval() == AttributeConst.APPRO_YES.getIntegerValue()
+                                ? JpaConst.APPRO_YES
+                                : JpaConst.APPRO_NO,
+                rv.getApproId() == null
+                        ? null
+                        : EmployeeConverter.toModel(rv.getApproId()))
+     ;
     }
 
     /**
@@ -57,11 +60,11 @@ public class ReportConverter {
                 r.getCreatedAt(),
                 r.getUpdatedAt(),
                 r.getApproval() == null
-                ? null
-                : r.getApproval() == AttributeConst.APPRO_YES.getIntegerValue()
-                        ? JpaConst.APPRO_YES
-                        : JpaConst.APPRO_NO,
-                r.getApproName());
+                        ? null
+                        : r.getApproval() == AttributeConst.APPRO_YES.getIntegerValue()
+                                ? JpaConst.APPRO_YES
+                                : JpaConst.APPRO_NO,
+                EmployeeConverter.toView(r.getApproId()));
     }
 
     /**
@@ -93,7 +96,7 @@ public class ReportConverter {
         r.setCreatedAt(rv.getCreatedAt());
         r.setUpdatedAt(rv.getUpdatedAt());
         r.setApproval(rv.getApproval());
-        r.setApproName(rv.getApproName());
+        r.setApproId(EmployeeConverter.toModel(rv.getApproId()));
     }
 
 }

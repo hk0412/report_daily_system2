@@ -13,7 +13,6 @@ import models.Employee;
  */
 public class EmployeeConverter {
 
-
     /**
      * ViewモデルのインスタンスからDTOモデルのインスタンスを作成する
      * @param ev EmployeeViewのインスタンス
@@ -22,11 +21,12 @@ public class EmployeeConverter {
     public static Employee toModel(EmployeeView ev) {
 
         Integer adm_flg = null;
-        if(ev.getAdminFlag() == AttributeConst.ROLE_ADMIN.getIntegerValue()) {
+
+        if (ev.getAdminFlag() == AttributeConst.ROLE_ADMIN.getIntegerValue()) {
             adm_flg = JpaConst.ROLE_ADMIN;
-        }else if (ev.getAdminFlag() == AttributeConst.ROLE_DIRECTOR.getIntegerValue()){
+        } else if (ev.getAdminFlag() == AttributeConst.ROLE_DIRECTOR.getIntegerValue()) {
             adm_flg = JpaConst.ROLE_DIRECTOR;
-        }else if (ev.getAdminFlag() == AttributeConst.ROLE_GENERAL.getIntegerValue()){
+        } else if (ev.getAdminFlag() == AttributeConst.ROLE_GENERAL.getIntegerValue()) {
             adm_flg = JpaConst.ROLE_GENERAL;
         }
 
@@ -52,16 +52,16 @@ public class EmployeeConverter {
      */
     public static EmployeeView toView(Employee e) {
 
-        if(e == null) {
+        if (e == null) {
             return null;
         }
 
         Integer adm_flg = null;
         if (e.getAdminFlag() == JpaConst.ROLE_ADMIN) {
             adm_flg = AttributeConst.ROLE_ADMIN.getIntegerValue();
-        }else if (e.getAdminFlag() == JpaConst.ROLE_DIRECTOR) {
+        } else if (e.getAdminFlag() == JpaConst.ROLE_DIRECTOR) {
             adm_flg = AttributeConst.ROLE_DIRECTOR.getIntegerValue();
-        }else if (e.getAdminFlag() == JpaConst.ROLE_GENERAL) {
+        } else if (e.getAdminFlag() == JpaConst.ROLE_GENERAL) {
             adm_flg = AttributeConst.ROLE_GENERAL.getIntegerValue();
         }
 

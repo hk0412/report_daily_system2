@@ -14,6 +14,7 @@ import constants.JpaConst;
 import constants.MessageConst;
 import services.ReportService;
 
+
 /**
  * 日報に関する処理を行うActionクラス
  *
@@ -44,7 +45,17 @@ public class ReportAction extends ActionBase {
 
         //指定されたページ数の一覧画面に表示する日報データを取得
         int page = getPage();
-        List<ReportView> reports = service.getAllPerPage(page);
+        List<ReportView> reports = null;
+
+        //セッションからログイン中の従業員情報を取得
+        EmployeeView ev = (EmployeeView) getSessionScope(AttributeConst.LOGIN_EMP);
+
+        //部長でなければ承認済みの日報のみを表示
+        if (ev.getAdminFlag() != AttributeConst.ROLE_DIRECTOR.getIntegerValue()) {
+            reports = service.getAplPerPage(page);
+        } else {
+            reports = service.getAllPerPage(page);
+        }
 
         //全日報データの件数を取得
         long reportsCount = service.countAll();
@@ -63,6 +74,7 @@ public class ReportAction extends ActionBase {
 
         //一覧画面を表示
         forward(ForwardConst.FW_REP_INDEX);
+        //}
     }
 
     /**
@@ -102,6 +114,7 @@ public class ReportAction extends ActionBase {
             } else {
                 day = LocalDate.parse(getRequestParam(AttributeConst.REP_DATE));
             }
+
 
             //セッションからログイン中の従業員情報を取得
             EmployeeView ev = (EmployeeView) getSessionScope(AttributeConst.LOGIN_EMP);
@@ -248,28 +261,25 @@ public class ReportAction extends ActionBase {
     //日報承認
     public void approval() throws ServletException, IOException {
 
-        //CSRF対策 tokenのチェック
-        if (checkToken()) {
+        //idを条件に日報データを取得する
+        ReportView rv = service.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
 
-            //idを条件に日報データを取得する
-            ReportView rv = service.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
+        //承認１を登録
+        rv.setApproval(AttributeConst.APPRO_YES.getIntegerValue());
 
-            //承認１を登録
-            rv.setApproval(AttributeConst.APPRO_YES.getIntegerValue());
+        //承認者を登録
+        rv.setApproId(getSessionScope(AttributeConst.LOGIN_EMP));
 
-            //セッションからログイン中の従業員情報を取得
-            EmployeeView ev = (EmployeeView) getSessionScope(AttributeConst.LOGIN_EMP);
+        service.approval(rv);
 
-            //承認者を登録
-            rv.setApproName(getSessionScope(AttributeConst.EMP_ID));
+        //セッションに承認完了のフラッシュメッセージを設定
+        putSessionScope(AttributeConst.FLUSH, MessageConst.I_APPROVAL.getMessage());
 
-            //セッションに承認完了のフラッシュメッセージを設定
-            putSessionScope(AttributeConst.FLUSH, MessageConst.I_APPROVAL.getMessage());
+        //日報詳細画面にリダイレクト
+        forward(ForwardConst.ACT_REP, ForwardConst.CMD_SHOW);
 
-            //一覧画面にリダイレクト
-            redirect(ForwardConst.ACT_REP, ForwardConst.CMD_INDEX);
 
-        }
     }
+
 
 }
