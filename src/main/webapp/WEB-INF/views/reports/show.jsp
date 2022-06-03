@@ -58,7 +58,8 @@
 
 
 
-         <c:if test="${sessionScope.login_employee.adminFlag == AttributeConst.ROLE_DIRECTOR.getIntegerValue()}">
+         <c:if test="${sessionScope.login_employee.adminFlag == AttributeConst.ROLE_DIRECTOR.getIntegerValue()
+         and report.approId.name == null}">
               <form method="POST"
                 action="<c:url value='?action=${actRep}&command=${appro}' />">
 

@@ -14,7 +14,6 @@ import constants.JpaConst;
 import constants.MessageConst;
 import services.ReportService;
 
-
 /**
  * 日報に関する処理を行うActionクラス
  *
@@ -115,7 +114,6 @@ public class ReportAction extends ActionBase {
                 day = LocalDate.parse(getRequestParam(AttributeConst.REP_DATE));
             }
 
-
             //セッションからログイン中の従業員情報を取得
             EmployeeView ev = (EmployeeView) getSessionScope(AttributeConst.LOGIN_EMP);
 
@@ -177,12 +175,6 @@ public class ReportAction extends ActionBase {
             //詳細画面を表示
             forward(ForwardConst.FW_REP_SHOW);
         }
-
-        //セッションに承認完了のフラッシュメッセージを設定
-        putSessionScope(AttributeConst.FLUSH, MessageConst.I_APPROVAL.getMessage());
-
-        //日報詳細画面にリダイレクト
-        redirect(ForwardConst.ACT_REP, ForwardConst.CMD_SHOW);
 
     }
 
@@ -275,11 +267,9 @@ public class ReportAction extends ActionBase {
         //セッションに承認完了のフラッシュメッセージを設定
         putSessionScope(AttributeConst.FLUSH, MessageConst.I_APPROVAL.getMessage());
 
-        //日報詳細画面にリダイレクト
-        forward(ForwardConst.ACT_REP, ForwardConst.CMD_SHOW);
-
+        //一覧画面にリダイレクト
+        redirect(ForwardConst.ACT_REP, ForwardConst.CMD_INDEX);
 
     }
-
 
 }

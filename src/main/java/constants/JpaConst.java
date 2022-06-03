@@ -75,7 +75,7 @@ public interface JpaConst {
     String Q_REP_GET_APL = ENTITY_REP + ".getApl";
     String Q_REP_GET_APL_DEF = "SELECT r FROM Report AS r WHERE r.approval = 1 ORDER BY r.id DESC";
     //全ての日報の件数を取得する
-    String Q_REP_COUNT = ENTITY_REP + ".count";
+    String Q_REP_COUNT = ENTITY_REP + ".count"; //日報カウント
     String Q_REP_COUNT_DEF = "SELECT COUNT(r) FROM Report AS r";
     //指定した従業員が作成した日報を全件idの降順で取得する
     String Q_REP_GET_ALL_MINE = ENTITY_REP + ".getAllMine";

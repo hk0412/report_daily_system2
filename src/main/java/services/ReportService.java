@@ -158,10 +158,6 @@ public class ReportService extends ServiceBase {
 
     }
 
-//    private EmployeeView getSessionScope(AttributeConst empId) {
-//        return null;
-//    }
-
     /**
      * idを条件にデータを1件取得する
      * @param id
